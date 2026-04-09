@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avalon Invest — Презентація для інвесторів</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0c0e13;
+  --bg2:#10131a;
+  --bg3:#14181f;
+  --A:#d4723a;
+  --Ahi:#e8884e;
+  --W:#f0ece4;
+  --dim:rgba(240,236,228,0.55);
+  --faint:rgba(240,236,228,0.28);
+  --border:rgba(240,236,228,0.09);
+  --borderA:rgba(212,114,58,0.35);
+  --card:rgba(255,255,255,0.04);
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--bg);color:var(--W);font-size:16px;line-height:1.65;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(12,14,19,0.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 5rem;height:58px;}
+.nav-logo{font-family:var(--serif);font-size:1.25rem;font-weight:500;letter-spacing:.03em;display:flex;align-items:center;gap:9px;color:var(--W);text-decoration:none;}
+.tri{width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:12px solid var(--A);}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{font-size:.7rem;text-transform:uppercase;letter-spacing:.13em;color:var(--faint);text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:var(--W);}
+
+/* HERO */
+.hero{min-height:92vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 6rem 6rem;background:var(--bg2);position:relative;overflow:hidden;}
+.hero::after{content:'';position:absolute;inset:0;background:linear-gradient(108deg,transparent 50%,rgba(212,114,58,0.07) 100%);pointer-events:none;}
+.hero-vline{position:absolute;top:0;right:6rem;width:1px;height:100%;background:linear-gradient(to bottom,transparent,var(--border) 25%,var(--border) 75%,transparent);}
+.hero-tag{font-size:.66rem;text-transform:uppercase;letter-spacing:.22em;color:var(--A);margin-bottom:2.5rem;font-weight:400;position:relative;z-index:1;}
+.hero h1{font-family:var(--serif);font-size:clamp(3.8rem,7.5vw,7rem);font-weight:500;line-height:.95;letter-spacing:-.01em;margin-bottom:2.5rem;white-space:nowrap;position:relative;z-index:1;}
+.hero h1 em{font-style:italic;color:var(--A);}
+.hero-sub{font-size:1.05rem;color:var(--dim);max-width:620px;line-height:1.8;margin-bottom:4rem;position:relative;z-index:1;}
+.hero-stats{display:flex;gap:0;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:2.5rem;position:relative;z-index:1;}
+.hstat{flex:1;min-width:160px;padding-right:3rem;}
+.hstat+.hstat{border-left:1px solid var(--border);padding-left:3rem;}
+.hstat:last-child{padding-right:0;}
+.hstat-n{font-family:var(--serif);font-size:2.7rem;font-weight:600;color:var(--W);line-height:1;}
+.hstat-l{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-top:6px;}
+
+/* SECTIONS */
+section{padding:7rem 6rem;border-top:1px solid var(--border);}
+section.alt{background:var(--bg2);}
+.ey{font-size:.66rem;text-transform:uppercase;letter-spacing:.18em;color:var(--A);margin-bottom:.8rem;font-weight:400;}
+.st{font-family:var(--serif);font-size:clamp(2rem,3.5vw,3.2rem);font-weight:500;line-height:1.1;margin-bottom:3.5rem;}
+
+/* KEY INFO */
+.ki-layout{display:grid;grid-template-columns:1fr 380px;gap:6rem;align-items:start;}
+.ki-prose p{font-size:1.05rem;color:var(--dim);line-height:1.82;margin-bottom:1.5rem;}
+.ki-prose p:last-child{margin-bottom:0;}
+.ki-prose strong{color:var(--W);font-weight:500;}
+.clabel{font-size:.66rem;text-transform:uppercase;letter-spacing:.13em;color:var(--faint);margin-bottom:1rem;}
+.cleg{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;font-size:.78rem;color:var(--dim);}
+.ldot{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:5px;vertical-align:middle;}
+.cwrap{position:relative;width:100%;}
+
+/* ADVANTAGES */
+.adv-top{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-bottom:1px;}
+.adv-bot{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;}
+.adv{background:var(--card);border:1px solid var(--border);padding:2.2rem;transition:border-color .25s,background .25s;}
+.adv:hover{border-color:var(--borderA);background:rgba(212,114,58,0.04);}
+.adv-n{font-family:var(--serif);font-size:2.5rem;font-weight:600;color:var(--A);opacity:.28;line-height:1;margin-bottom:1rem;}
+.adv-t{font-size:1rem;font-weight:500;margin-bottom:.6rem;line-height:1.3;color:var(--W);}
+.adv-d{font-size:.875rem;color:var(--dim);line-height:1.65;}
+
+/* HOW */
+.how-steps{display:flex;flex-direction:column;margin-bottom:4rem;}
+.how-step{display:grid;grid-template-columns:72px 1fr;gap:0;padding:2rem 0;border-bottom:1px solid var(--border);align-items:start;}
+.how-step:last-child{border-bottom:none;}
+.how-n{width:44px;height:44px;border-radius:50%;border:1px solid var(--A);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.2rem;color:var(--A);flex-shrink:0;margin-top:3px;}
+.how-b h3{font-size:1.05rem;font-weight:500;margin-bottom:.35rem;color:var(--W);}
+.how-b p{font-size:.9rem;color:var(--dim);line-height:1.7;}
+
+/* LEGAL */
+.legal-layout{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;}
+.org{display:flex;flex-direction:column;align-items:center;}
+.org-row{display:flex;gap:2.5rem;align-items:center;justify-content:center;}
+.ob{padding:.75rem 1.5rem;border:1px solid var(--border);border-radius:2px;font-size:.85rem;font-weight:500;text-align:center;min-width:130px;}
+.ob-fund{background:var(--A);border-color:var(--A);color:#fff;}
+.ob-av{background:rgba(60,100,200,0.14);border-color:rgba(80,130,220,0.38);}
+.ob-inv{background:rgba(255,255,255,0.05);}
+.ob-pr{background:rgba(255,255,255,0.03);font-size:.75rem;min-width:118px;}
+.org-line{width:1px;height:30px;background:var(--border);margin:0 auto;}
+.org-pct{font-size:.68rem;color:var(--A);margin-bottom:3px;font-weight:500;text-align:center;}
+.org-br{display:flex;flex-direction:column;align-items:center;}
+.lnotes{display:flex;flex-direction:column;gap:1.2rem;}
+.lnote{padding:1.2rem 1.5rem;border-left:2px solid var(--A);background:var(--card);}
+.lnote.dim-border{border-left-color:var(--border);}
+.lnote h4{font-size:.9rem;font-weight:500;margin-bottom:.3rem;}
+.lnote p{font-size:.83rem;color:var(--dim);line-height:1.65;}
+
+/* TEAM */
+.team-g{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+.tc{background:var(--card);border:1px solid var(--border);padding:3rem;}
+.tc-role{font-size:.66rem;text-transform:uppercase;letter-spacing:.15em;color:var(--A);margin-bottom:.5rem;}
+.tc-name{font-family:var(--serif);font-size:2.2rem;font-weight:500;margin-bottom:.2rem;line-height:1.1;}
+.tc-ti{font-size:.85rem;color:var(--faint);margin-bottom:2rem;font-style:italic;}
+.tc ul{list-style:none;display:flex;flex-direction:column;gap:.65rem;}
+.tc li{font-size:.88rem;color:var(--dim);padding-left:1.1rem;position:relative;line-height:1.55;}
+.tc li::before{content:'—';position:absolute;left:0;color:var(--A);}
+
+/* RISKS */
+.risk-g{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+.rc{background:var(--card);border:1px solid var(--border);padding:2.2rem;}
+.rc-n{font-size:.63rem;text-transform:uppercase;letter-spacing:.12em;color:var(--faint);margin-bottom:.6rem;}
+.rc-t{font-size:1rem;font-weight:500;margin-bottom:.6rem;}
+.rc-d{font-size:.875rem;color:var(--dim);margin-bottom:1rem;line-height:1.68;}
+.rc-m{font-size:.82rem;color:rgba(240,236,228,.82);padding-left:.9rem;border-left:2px solid var(--A);line-height:1.55;}
+
+/* CONDITIONS */
+.ctab{width:100%;border-collapse:collapse;margin-bottom:4rem;}
+.ctab tr{border-bottom:1px solid var(--border);}
+.ctab tr:last-child{border-bottom:none;}
+.ctab td{padding:1.3rem 0;font-size:.92rem;vertical-align:top;}
+.ctab td:first-child{color:var(--dim);font-weight:400;width:28%;padding-right:3rem;}
+.ctab td:last-child{color:var(--W);line-height:1.75;}
+.hl{color:var(--A)!important;font-weight:500;}
+.bg{display:inline-block;background:rgba(40,180,100,.14);color:#5bdb8a;font-size:.72rem;padding:2px 9px;border-radius:2px;font-weight:500;}
+.cc-wrap{display:grid;grid-template-columns:1fr 1fr;gap:4rem;}
+
+/* SCENARIOS */
+.sc-g{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;}
+.sc{background:var(--card);border:1px solid var(--border);padding:2.2rem;transition:border-color .2s;}
+.sc:hover{border-color:var(--borderA);}
+.sc-p{font-family:var(--serif);font-size:2rem;font-weight:600;color:var(--A);line-height:1;margin-bottom:.2rem;}
+.sc-sl{font-size:.68rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:1.5rem;}
+.sc-r{display:flex;justify-content:space-between;align-items:baseline;padding:.45rem 0;border-bottom:1px solid rgba(240,236,228,.06);font-size:.83rem;}
+.sc-r:last-of-type{border-bottom:none;}
+.sc-r span:first-child{color:var(--faint);}
+.sc-tot{margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--A);display:flex;justify-content:space-between;align-items:baseline;}
+.sc-tot span:first-child{font-size:.76rem;color:var(--dim);}
+.sc-tot span:last-child{font-family:var(--serif);font-size:1.5rem;color:var(--A);font-weight:600;}
+.sc-note{font-size:.7rem;color:rgba(240,236,228,.27);margin-top:.7rem;line-height:1.55;}
+.disc{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);font-size:.75rem;color:rgba(240,236,228,.26);line-height:1.8;}
+
+/* NEXT */
+.ns-wrap{display:flex;flex-direction:column;max-width:740px;}
+.ns{display:grid;grid-template-columns:80px 1fr;gap:0;padding:2rem 0;border-bottom:1px solid var(--border);align-items:start;}
+.ns:last-child{border-bottom:none;}
+.ns-n{font-family:var(--serif);font-size:3.5rem;color:rgba(240,236,228,.1);line-height:1;font-weight:600;}
+.ns-b h3{font-size:1.05rem;font-weight:500;margin-bottom:.35rem;padding-top:.3rem;}
+.ns-b p{font-size:.88rem;color:var(--dim);line-height:1.7;}
+.cbox{max-width:540px;margin-top:4rem;padding:2.5rem;background:var(--card);border:1px solid var(--borderA);}
+.cbox .ey{margin-bottom:.75rem;}
+.cbox p{font-family:var(--serif);font-size:1.5rem;font-weight:500;margin-bottom:1rem;line-height:1.3;}
+.cbox small{font-size:.83rem;color:var(--dim);line-height:1.75;}
+
+/* FOOTER */
+footer{background:var(--bg2);padding:3rem 6rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+footer p{font-size:.74rem;color:var(--faint);}
+
+@media(max-width:1000px){
+  nav{padding:0 1.5rem;} .nav-links{display:none;}
+  section{padding:4rem 1.5rem;} .hero{padding:0 1.5rem 4rem;}
+  .hero h1{white-space:normal;}
+  .ki-layout,.legal-layout,.team-g,.risk-g,.cc-wrap{grid-template-columns:1fr;}
+  .sc-g{grid-template-columns:1fr 1fr;}
+  .adv-top,.adv-bot{grid-template-columns:1fr;}
+  footer{padding:2rem 1.5rem;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#hero"><span class="tri"></span>avalon invest</a>
+  <ul class="nav-links">
+    <li><a href="#advantages">Переваги</a></li>
+    <li><a href="#how">Як працює</a></li>
+    <li><a href="#legal">Структура</a></li>
+    <li><a href="#team">Команда</a></li>
+    <li><a href="#conditions">Умови</a></li>
+    <li><a href="#scenarios">Сценарії</a></li>
+    <li><a href="#next">Кроки</a></li>
+  </ul>
+</nav>
+
+<div class="hero" id="hero">
+  <div class="hero-vline"></div>
+  <p class="hero-tag">Presentation for investors · Draft</p>
+  <h1>Avalon <em>Invest</em></h1>
+  <p class="hero-sub">Фонд комерційної нерухомості з цільовою дохідністю від 8% річних у доларах США. Стабільний орендний дохід плюс зростання вартості активів.</p>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-n">8%+</div><div class="hstat-l">Цільова дохідність / рік</div></div>
+    <div class="hstat"><div class="hstat-n">3</div><div class="hstat-l">Об'єкти у Львові</div></div>
+    <div class="hstat"><div class="hstat-n">від $42.5K</div><div class="hstat-l">Мінімальна інвестиція</div></div>
+    <div class="hstat"><div class="hstat-n">2014</div><div class="hstat-l">Avalon на ринку</div></div>
+  </div>
+</div>
+
+<section id="keyinfo" class="alt">
+  <p class="ey">Ключова інформація</p>
+  <h2 class="st">Avalon Invest — коротко про головне</h2>
+  <div class="ki-layout">
+    <div class="ki-prose">
+      <p>Avalon Invest — фонд комерційної нерухомості, що інвестує в дохідні об'єкти та має цільову дохідність від <strong>8% річних у доларах США</strong>.</p>
+      <p>Фонд інвестує в діючі об'єкти комерційної нерухомості з орендним потоком — наразі 3 об'єкти у Львові — та поступово розширюватиме портфель новими активами.</p>
+      <p>Дохід інвестора формується з двох джерел: <strong>регулярні дивіденди від оренди</strong> (ціль — близько 8% річних у доларах) та <strong>потенційне зростання вартості активів</strong> (орієнтовно 1–3% на рік).</p>
+      <p>Управління фондом здійснює команда Avalon з досвідом роботи на ринку нерухомості Львова з 2014 року. Горизонт інвестування — середньо- та довгостроковий (від 2 років). Мінімальна інвестиція — від $42 500.</p>
+    </div>
+    <div>
+      <p class="clabel">Структура цільової прибутковості</p>
+      <div class="cleg">
+        <span><span class="ldot" style="background:#d4723a;"></span>Дивіденди ~8%</span>
+        <span><span class="ldot" style="background:#7aa8d4;"></span>Зростання ~2%</span>
+      </div>
+      <div class="cwrap" style="height:230px;margin-top:16px;">
+        <canvas id="donutChart" role="img" aria-label="Кругова діаграма цільової прибутковості">8% дивіденди, 2% зростання</canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="advantages">
+  <p class="ey">Чому Avalon Invest</p>
+  <h2 class="st">Ключові інвестиційні переваги</h2>
+  <div class="adv-top">
+    <div class="adv"><div class="adv-n">01</div><div class="adv-t">Регулярний дохід від оренди</div><div class="adv-d">Фонд інвестує в об'єкти з існуючим орендним потоком, що дозволяє формувати стабільні грошові виплати інвесторам щоквартально.</div></div>
+    <div class="adv"><div class="adv-n">02</div><div class="adv-t">Професійне управління без участі інвестора</div><div class="adv-d">Операційні рішення приймає команда Avalon — інвестор отримує дохід без залучення до управління активами.</div></div>
+    <div class="adv"><div class="adv-n">03</div><div class="adv-t">Захист від девальвації гривні</div><div class="adv-d">Орендні ставки та вартість комерційної нерухомості в Україні традиційно прив'язані до долара США, що захищає від валютних коливань.</div></div>
+  </div>
+  <div class="adv-bot">
+    <div class="adv"><div class="adv-n">04</div><div class="adv-t">Доступ до великих комерційних об'єктів</div><div class="adv-d">Фонд дає можливість інвестувати у дохідну нерухомість, яка зазвичай недоступна для індивідуального інвестора через високий поріг входу.</div></div>
+    <div class="adv"><div class="adv-n">05</div><div class="adv-t">Прозора структура інвестиції</div><div class="adv-d">Інвестор чітко розуміє, у які активи інвестуються кошти, як формується дохід та які фактори впливають на результат.</div></div>
+  </div>
+</section>
+
+<section id="how" class="alt">
+  <p class="ey">Механіка</p>
+  <h2 class="st">Як працює інвестиція</h2>
+  <div class="how-steps">
+    <div class="how-step">
+      <div class="how-n">1</div>
+      <div class="how-b"><h3>Інвестор вкладає кошти у фонд</h3><p>Отримує частку (цінні папери), що підтверджує участь у портфелі нерухомості. Права зафіксовані відповідно до чинного законодавства України.</p></div>
+    </div>
+    <div class="how-step">
+      <div class="how-n">2</div>
+      <div class="how-b"><h3>Фонд інвестує залучені кошти в комерційну нерухомість</h3><p>Кошти спрямовуються в діючі об'єкти з підтвердженим орендним потоком — наразі 3 об'єкти у Львові.</p></div>
+    </div>
+    <div class="how-step">
+      <div class="how-n">3</div>
+      <div class="how-b"><h3>Орендарі сплачують орендні платежі</h3><p>Регулярні орендні платежі формують стабільний грошовий потік фонду. Орендні ставки прив'язані до долара США.</p></div>
+    </div>
+    <div class="how-step">
+      <div class="how-n">4</div>
+      <div class="how-b"><h3>Фонд розподіляє прибуток між інвесторами у вигляді дивідендів</h3><p>Після покриття операційних витрат та обслуговування активів чистий прибуток виплачується інвесторам щоквартально.</p></div>
+    </div>
+    <div class="how-step">
+      <div class="how-n">5</div>
+      <div class="how-b"><h3>Додатковий дохід — зростання вартості нерухомості</h3><p>Щорічна переоцінка активів відображає ринкове зростання вартості нерухомості (орієнтовно 1–3% на рік), збільшуючи чисту вартість акції фонду.</p></div>
+    </div>
+  </div>
+  <p class="clabel">Прогнозована вартість $100 000 за 5 років</p>
+  <div class="cleg" style="margin-bottom:16px;">
+    <span><span class="ldot" style="background:#d4723a;"></span>Тільки орендний дохід (8% / рік)</span>
+    <span><span class="ldot" style="background:#7aa8d4;"></span>З урахуванням зростання активів (+2% / рік)</span>
+  </div>
+  <div class="cwrap" style="height:280px;">
+    <canvas id="growthChart" role="img" aria-label="Прогноз зростання $100,000 за 5 років">Прогноз дохідності</canvas>
+  </div>
+</section>
+
+<section id="legal">
+  <p class="ey">Юридична структура</p>
+  <h2 class="st">КІФ «Нікс» — структура фонду</h2>
+  <div class="legal-layout">
+    <div class="org">
+      <div class="org-row">
+        <div class="ob ob-av">Avalon</div>
+        <div class="ob ob-inv">Інвестори</div>
+      </div>
+      <div class="org-line"></div>
+      <div class="org-row"><div class="ob ob-fund">КІФ «Нікс»</div></div>
+      <div class="org-line"></div>
+      <div style="display:flex;gap:1.8rem;align-items:flex-start;justify-content:center;">
+        <div class="org-br"><div class="org-pct">100%</div><div class="org-line" style="height:18px;"></div><div class="ob ob-pr">New Point<br><span style="opacity:.5;font-size:.68rem;">ТОВ «Джамбо Маркет»</span></div></div>
+        <div class="org-br"><div class="org-pct">100%</div><div class="org-line" style="height:18px;"></div><div class="ob ob-pr">Futura Hub<br><span style="opacity:.5;font-size:.68rem;">ТОВ «Плаза Львів»</span></div></div>
+        <div class="org-br"><div class="org-pct">100%</div><div class="org-line" style="height:18px;"></div><div class="ob ob-pr">Great<br><span style="opacity:.5;font-size:.68rem;">ТОВ «Апгрейт»</span></div></div>
+      </div>
+    </div>
+    <div class="lnotes">
+      <div class="lnote"><h4>Права через цінні папери</h4><p>Інвестор володіє часткою фонду через цінні папери — юридично закріплене підтвердження участі у портфелі нерухомості.</p></div>
+      <div class="lnote dim-border"><h4>Розділення управління</h4><p>Фонд приймає операційні рішення. Кожен об'єкт оформлений на окрему юридичну особу — ізоляція ризиків між активами.</p></div>
+      <div class="lnote dim-border"><h4>Розподіл доходів</h4><p>Доходи від нерухомості акумулюються у фонді та розподіляються інвесторам у вигляді дивідендів щоквартально.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="team" class="alt">
+  <p class="ey">Управління</p>
+  <h2 class="st">Хто управляє фондом</h2>
+  <p style="font-size:.95rem;color:var(--dim);margin-bottom:2.5rem;max-width:700px;line-height:1.8;">Інвестиційні рішення та операційне управління розділені між окремими командами — це забезпечує системність та відповідальність за результат.</p>
+  <div class="team-g">
+    <div class="tc">
+      <div class="tc-role">Інвестиційне управління фондом</div>
+      <div class="tc-name">Ян Третяк</div>
+      <div class="tc-ti">CEO Avalon Invest</div>
+      <ul>
+        <li>18 років досвіду в корпоративних фінансах і інвестиційному секторі</li>
+        <li>Понад 20 транзакцій на загальну суму понад $200 млн: M&amp;A, IPO, боргові реструктуризації</li>
+        <li>До Avalon — інвестиційний директор у Dragon Capital; відповідальний, зокрема, за ТРЦ Victoria Gardens</li>
+        <li>Керівник фонду нерухомості Avalon Invest з листопада 2025 року</li>
+      </ul>
+    </div>
+    <div class="tc">
+      <div class="tc-role">Операційне управління нерухомістю</div>
+      <div class="tc-name">Олена Яценко</div>
+      <div class="tc-ti">CEO Avalon Asset Management</div>
+      <ul>
+        <li>Операційне управління комерційною нерухомістю та забезпечення стабільного орендного потоку</li>
+        <li>Глибока експертиза ринку нерухомості Львова та West Ukraine загалом</li>
+        <li>Команда Avalon активно працює на ринку нерухомості з 2014 року</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="risks">
+  <p class="ey">Ризик-менеджмент</p>
+  <h2 class="st">Ключові ризики та підходи до управління</h2>
+  <div class="risk-g">
+    <div class="rc"><div class="rc-n">Ризик 01</div><div class="rc-t">Макроекономічні та геополітичні ризики</div><div class="rc-d">Ринок нерухомості в Україні залежить від загальної економічної ситуації, рівня ділової активності та воєнних факторів.</div><div class="rc-m">Фокус на ліквідних сегментах та орендарях зі стабільним бізнесом</div></div>
+    <div class="rc"><div class="rc-n">Ризик 02</div><div class="rc-t">Регуляторні та юридичні ризики</div><div class="rc-d">Правове середовище та практика застосування законодавства в Україні можуть впливати на рівень захищеності прав інвесторів.</div><div class="rc-m">Структура інвестиції побудована відповідно до чинного законодавства з фіксацією прав через цінні папери</div></div>
+    <div class="rc"><div class="rc-n">Ризик 03</div><div class="rc-t">Фізичні ризики активів (пошкодження або знищення)</div><div class="rc-d">Об'єкти можуть зазнати пошкоджень внаслідок воєнних дій або інших непередбачених подій.</div><div class="rc-m">Активи страхуються та відбираються з урахуванням локації та профілю ризику</div></div>
+    <div class="rc"><div class="rc-n">Ризик 04</div><div class="rc-t">Стабільність орендного потоку</div><div class="rc-d">Дохідність залежить від рівня заповненості об'єктів та платоспроможності орендарів.</div><div class="rc-m">Диверсифікація орендарів та активна робота з ними</div></div>
+  </div>
+</section>
+
+<section id="conditions" class="alt">
+  <p class="ey">Умови інвестування</p>
+  <h2 class="st">Параметри фонду</h2>
+  <table class="ctab">
+    <tr><td>Ціна однієї акції</td><td>Поточна чиста вартість активів / кількість випущених акцій</td></tr>
+    <tr><td>Мінімальна інвестиція</td><td>1 827 тис. грн (законодавче обмеження) — орієнтовно від $42 500</td></tr>
+    <tr>
+      <td>Ціна акції для інвестора при «вході»</td>
+      <td>
+        При інвестуванні до $250 тис. — встановлена ціна<br>
+        При інвестуванні $250–500 тис. — встановлена ціна <span class="hl">мінус 2,5%</span><br>
+        При інвестуванні $500 тис.+ — встановлена ціна <span class="hl">мінус 5%</span>
+      </td>
+    </tr>
+    <tr><td>Виплата дивідендів</td><td>Щоквартально</td></tr>
+    <tr><td>Переоцінка активів</td><td>Щорічно</td></tr>
+    <tr>
+      <td>Ціна акції при викупі фондом</td>
+      <td>
+        При викупі протягом 1-го року — встановлена ціна <span class="hl">мінус 10%</span><br>
+        При викупі протягом 2-го року — встановлена ціна <span class="hl">мінус 5%</span><br>
+        При викупі після 2 років — встановлена ціна <span class="hl">мінус 1%</span><br>
+        Для першого раунду — <span class="bg">0% для всіх</span>
+      </td>
+    </tr>
+    <tr><td>Винагорода КУА</td><td>Фонд передбачає винагороду за управління та результат, що узгоджує інтереси команди та інвесторів</td></tr>
+  </table>
+  <div class="cc-wrap">
+    <div>
+      <p class="clabel">Знижка при вході залежно від обсягу</p>
+      <div class="cleg" style="margin-bottom:14px;"><span><span class="ldot" style="background:#d4723a;"></span>Знижка до ціни акції (%)</span></div>
+      <div class="cwrap" style="height:230px;">
+        <canvas id="discountChart" role="img" aria-label="Знижки при вході 0%, 2.5%, 5%">Знижки при вході</canvas>
+      </div>
+    </div>
+    <div>
+      <p class="clabel">Дисконт при виході залежно від строку</p>
+      <div class="cleg" style="margin-bottom:14px;"><span><span class="ldot" style="background:#7aa8d4;"></span>Дисконт при виході (%)</span></div>
+      <div class="cwrap" style="height:230px;">
+        <canvas id="exitChart" role="img" aria-label="Дисконт при виході 10%, 5%, 1%">Дисконт при виході</canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="scenarios">
+  <p class="ey">Приклади / сценарії</p>
+  <h2 class="st">Що якщо вкласти $100 000</h2>
+  <div class="sc-g">
+    <div class="sc">
+      <div class="sc-p">6 міс</div><div class="sc-sl">Короткий строк</div>
+      <div class="sc-r"><span>Дивіденди від оренди</span><span>+$4 000</span></div>
+      <div class="sc-r"><span>Зростання активів</span><span>+$1 000</span></div>
+      <div class="sc-r"><span>Дисконт при виході</span><span style="color:#d46060;">−$10 000</span></div>
+      <div class="sc-tot"><span>Чистий результат</span><span style="color:#d46060;">−$5 000</span></div>
+      <div class="sc-note">Ранній вихід невигідний — дохід не покриває дисконт</div>
+    </div>
+    <div class="sc">
+      <div class="sc-p">1 рік</div><div class="sc-sl">Середній строк</div>
+      <div class="sc-r"><span>Дивіденди від оренди</span><span>+$8 000</span></div>
+      <div class="sc-r"><span>Зростання активів</span><span>+$2 000</span></div>
+      <div class="sc-r"><span>Дисконт при виході</span><span style="color:#d4723a;">−$5 000</span></div>
+      <div class="sc-tot"><span>Чистий результат</span><span>+$5 000</span></div>
+      <div class="sc-note">Перший раунд: вихід без дисконту → +$10 000</div>
+    </div>
+    <div class="sc">
+      <div class="sc-p">2 роки</div><div class="sc-sl">Рекомендований строк</div>
+      <div class="sc-r"><span>Дивіденди від оренди</span><span>+$16 000</span></div>
+      <div class="sc-r"><span>Зростання активів</span><span>+$4 000</span></div>
+      <div class="sc-r"><span>Дисконт при виході</span><span style="color:#d4723a;">−$1 000</span></div>
+      <div class="sc-tot"><span>Чистий результат</span><span>+$19 000</span></div>
+      <div class="sc-note">Ефективна дохідність ≈ 9.5% / рік</div>
+    </div>
+    <div class="sc" style="border-color:var(--borderA);">
+      <div class="sc-p">3 роки</div><div class="sc-sl">Оптимальний строк</div>
+      <div class="sc-r"><span>Дивіденди від оренди</span><span>+$24 000</span></div>
+      <div class="sc-r"><span>Зростання активів</span><span>+$6 000</span></div>
+      <div class="sc-r"><span>Дисконт при виході</span><span style="color:#d4723a;">−$1 000</span></div>
+      <div class="sc-tot"><span>Чистий результат</span><span>+$29 000</span></div>
+      <div class="sc-note">Ефективна дохідність ≈ 9.7% / рік</div>
+    </div>
+  </div>
+  <div class="disc">* Наведені цифри є ілюстративними сценаріями при досягненні прогнозних цільових показників фонду (8% дохідність від оренди + 2% зростання вартості активів на рік). Це не є гарантією або зобов'язанням з боку фонду. Фактичні результати можуть відрізнятися залежно від ринкових умов, заповненості об'єктів та інших факторів. Інвестиції у фонд пов'язані з ризиками, включаючи можливість часткової або повної втрати вкладеного капіталу.</div>
+</section>
+
+<section id="next" class="alt">
+  <p class="ey">Наступні кроки</p>
+  <h2 class="st">Як стати інвестором</h2>
+  <div class="ns-wrap">
+    <div class="ns"><div class="ns-n">01</div><div class="ns-b"><h3>Відкриття рахунку в цінних паперах</h3><p>Відкрийте брокерський рахунок у вповноваженого зберігача цінних паперів — це необхідна умова для зарахування акцій фонду.</p></div></div>
+    <div class="ns"><div class="ns-n">02</div><div class="ns-b"><h3>Підписання договору купівлі-продажу цінних паперів</h3><p>Укладення юридично обов'язкового договору відповідно до чинного законодавства України, що фіксує права та умови інвестиції.</p></div></div>
+    <div class="ns"><div class="ns-n">03</div><div class="ns-b"><h3>Оплата ціни акцій</h3><p>Переказ коштів відповідно до узгодженої ціни та обсягу інвестиції.</p></div></div>
+    <div class="ns"><div class="ns-n">04</div><div class="ns-b"><h3>Зарахування акцій на рахунок інвестора</h3><p>Акції фонду КІФ «Нікс» зараховуються на ваш рахунок у цінних паперах — офіційне підтвердження участі у портфелі нерухомості.</p></div></div>
+  </div>
+  <div class="cbox">
+    <p class="ey">Контакт для обговорення</p>
+    <p>Деталі умов та відкриті питання — для обговорення з Юрієм</p>
+    <small>Пільгові умови для співробітників, можливості дострокового виходу для учасників першого раунду та інші деталі умов інвестування.</small>
+  </div>
+</section>
+
+<footer>
+  <div style="display:flex;align-items:center;gap:8px;font-family:var(--serif);font-size:1.15rem;color:var(--W);">
+    <span class="tri"></span>avalon invest
+  </div>
+  <p>Presentation for investors · Draft · Конфіденційно</p>
+  <p>КІФ «Нікс» під управлінням Avalon Asset Management</p>
+</footer>
+
+<script>
+const A='#d4723a',B='#7aa8d4',BG='#10131a';
+const gr='rgba(240,236,228,0.07)',tk='rgba(240,236,228,0.4)';
+const f={family:"'DM Sans',sans-serif",size:12};
+
+new Chart(document.getElementById('donutChart'),{
+  type:'doughnut',
+  data:{labels:['Дивіденди ~8%','Зростання ~2%'],datasets:[{data:[8,2],backgroundColor:[A,B],borderColor:[BG,BG],borderWidth:5,hoverOffset:6}]},
+  options:{responsive:true,maintainAspectRatio:false,cutout:'70%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.label+': '+c.parsed+'%'}}}}
+});
+
+new Chart(document.getElementById('growthChart'),{
+  type:'line',
+  data:{
+    labels:['Зараз','Рік 1','Рік 2','Рік 3','Рік 4','Рік 5'],
+    datasets:[
+      {label:'Орендний дохід',data:[100000,108000,116640,125971,136049,146932],borderColor:A,backgroundColor:'rgba(212,114,58,0.09)',fill:true,tension:.35,pointBackgroundColor:A,pointRadius:4,borderWidth:2},
+      {label:'З зростанням',data:[100000,110000,121000,133100,146410,161051],borderColor:B,fill:false,tension:.35,pointBackgroundColor:B,pointRadius:4,borderWidth:2,borderDash:[5,4]}
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' $'+Math.round(c.parsed.y).toLocaleString()}}},
+    scales:{
+      x:{grid:{color:gr},ticks:{font:f,color:tk}},
+      y:{grid:{color:gr},ticks:{font:f,color:tk,callback:v=>'$'+(v/1000).toFixed(0)+'K'},min:90000}
+    }
+  }
+});
+
+new Chart(document.getElementById('discountChart'),{
+  type:'bar',
+  data:{
+    labels:['До $250K','$250K–$500K','$500K+'],
+    datasets:[{data:[0,2.5,5],backgroundColor:['rgba(240,236,228,0.09)','rgba(212,114,58,0.48)',A],borderColor:['rgba(240,236,228,0.22)',A,A],borderWidth:1,borderRadius:2}]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.parsed.y+'%'}}},
+    scales:{x:{grid:{color:gr},ticks:{font:f,color:tk}},y:{grid:{color:gr},ticks:{font:f,color:tk,callback:v=>v+'%'},min:0,max:7}}
+  }
+});
+
+new Chart(document.getElementById('exitChart'),{
+  type:'bar',
+  data:{
+    labels:['1-й рік','2-й рік','Після 2 років'],
+    datasets:[{data:[10,5,1],backgroundColor:['rgba(210,70,70,0.52)','rgba(212,114,58,0.52)','rgba(91,219,138,0.32)'],borderColor:['rgba(210,70,70,0.9)',A,'#5bdb8a'],borderWidth:1,borderRadius:2}]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.parsed.y+'%'}}},
+    scales:{x:{grid:{color:gr},ticks:{font:f,color:tk}},y:{grid:{color:gr},ticks:{font:f,color:tk,callback:v=>v+'%'},min:0,max:12}}
+  }
+});
+</script>
+</body>
+</html>
